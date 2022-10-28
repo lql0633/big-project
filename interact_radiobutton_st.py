@@ -6,8 +6,9 @@ import streamlit as st
 
 def draw_plot(ax,df,by='Global_Sales'):
     region=by.split('_')[0]
+    print(by)
     ax.set_title(f"top 10 game saled within {region}")
-    df.sort_values(by=['Global_Sales'],ascending=False)
+    df=df.sort_values(by=[by],ascending=False).reset_index()
     game_name=[]
     sales=[]
     for index in range(10):
@@ -27,13 +28,13 @@ def draw_plot(ax,df,by='Global_Sales'):
 
 def interact_radiobutton():
     df=pd.read_csv('vgsales.csv',header=0)
-    df.sort_values(by=['Global_Sales'],ascending=False)
-    print(df)
     fig, ax = plt.subplots()
     fig.subplots_adjust(left=0.2,bottom=0.3)
     genre = st.radio(
-    "Region",
-    ('NA', 'EU', 'JP','Other','Global'))
+    label="Region",
+    options=('NA', 'EU', 'JP','Other','Global'),
+
+    )
     if genre=='':
         draw_plot(ax,df)
     else:
@@ -43,6 +44,6 @@ def interact_radiobutton():
 
    
     st.pyplot(fig)
-    
+
 if __name__=='__main__':
     interact_radiobutton()
